@@ -26,7 +26,34 @@ when a.ref_tag in ('view_receipt') then 'post purchase'
 when a.ref_tag in ('Deals Tab') then 'deals tab'
 else a.ref_tag 
 
--- Get visit level buyer segment for mapped user id
+-- buyer segment for mapped user id on visit level
+ create or replace temporary table visits_w_segments as (
+with segments as (
+select 
+	buyer_segment,
+	as_of_date, 
+	mapped_user_id
+from 
+    `etsy-data-warehouse-prod.rollups.buyer_segmentation_vw`
+where 
+  as_of_date >= last_date)
+select
+  v._date
+  , v.visit_id
+  , c.buyer_segment 
+from etsy-data-warehouse-prod.weblog.visits v
+left join
+  etsy-data-warehouse-prod.user_mart.user_mapping b 
+    on v.user_id=b.user_id -- using user_id from visits bc it will not be null if someone signed in, will not dupe visit_id
+left join
+  segments c 
+    on b.mapped_user_id=c.mapped_user_id
+    and v._date=c.as_of_date
+  where v._date >= last_date
+);
+
+
+-- Get buyer segment for mapped user id
 CREATE OR REPLACE TEMP TABLE buyer_segments as (
 with purchase_stats as (
   SELECT
