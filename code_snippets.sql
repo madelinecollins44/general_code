@@ -106,8 +106,6 @@ with purchase_stats as (
   from purchase_stats p
 ); 
 
-
-
 -- Query to find error in event_hub events
 SELECT *
 FROM `etsy-eventpipe-prod.data_collection.beacon_validation_log`
@@ -122,4 +120,26 @@ FROM `etsy-data-warehouse-prod`.listing_mart.listings AS l
 LEFT OUTER JOIN `etsy-data-warehouse-prod`.etsy_shard.merch_listings AS m on l.listing_id = m.listing_id
 where m.status = 0
 and l.is_active = 1
+	
+--use in cases when you have null + non null values and want them combined 
+Coalesce(ref_tag, module_placement) as referrer 
+	
+--Regex to extract listing_id from url 
+regexp_substr(url, "listing\\/(\\d*)")
+max(case when regexp_contains(title, "(?i)\bgift|\bcadeau|\bregalo|\bgeschenk|\bprezent|ギフト") then 1 else 0 end) as gift_title
+ "(?i)\ -- makes it case insensitive
 
+--Cast int64 to date 
+date(timestamp_seconds(original_create_date))
+
+-- get browser_id from visit_id
+split(visit_id, ".")[safe_offset(0)] 
+
+--Sometimes need to join on date instead of filter on date bc when date is null those instances are excluded 
+left join 
+etsy-data-warehouse-prod.star_seller.star_seller_daily sd
+on s.shop_id=sd.shop_id
+and sd._date>=current_date - 1
+
+--Use regex_contains on two words
+ case when regexp_contains(search_name, '(\?i)baby.*boy') then 1 else 0 end as baby_boy_title
