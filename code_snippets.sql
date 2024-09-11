@@ -1,3 +1,24 @@
+--listing gms 
+create or replace temporary table listing_gms as (
+select
+	tv.date as _date
+	, tv.visit_id
+	, tv.platform_app as platform
+	, tv.transaction_id
+	, t.listing_id
+	, tg.trans_gms_net
+from
+	`etsy-data-warehouse-prod`.transaction_mart.transactions_visits tv
+join
+	`etsy-data-warehouse-prod`.transaction_mart.transactions_gms_by_trans tg
+using(transaction_id)
+join
+	`etsy-data-warehouse-prod`.transaction_mart.all_transactions t
+on
+	tv.transaction_id = t.transaction_id
+where
+	tv.date >= last_date
+
 --engaged visits from weblog.visits
   , count(distinct case 
       when timestamp_diff(v.end_datetime, v.start_datetime, v.second)> 300 
