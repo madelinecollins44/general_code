@@ -1,3 +1,10 @@
+--engaged visits from weblog.visits
+  , count(distinct case 
+      when timestamp_diff(v.end_datetime, v.start_datetime, v.second)> 300 
+      or v.cart_adds>0 or v.fav_item_count > 0 or v.fav_shop_count > 0
+      or v.converted > 0
+    then visit_id end) as engaged_visits
+
 --Definitions of search bins– bins are based on volume, not attributes of the query itself
 'Tail': .ktile <= 7000 THEN 'tail'
 'Torso': base.ktile BETWEEN 7001 AND 9600
