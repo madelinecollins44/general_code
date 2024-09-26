@@ -1,3 +1,9 @@
+--count number of active experiments running
+SELECT *
+FROM `etsy-data-warehouse-prod.catapult_unified.experiment`
+WHERE _date = "2024-09-25"
+  AND bucketing_id_type = 1 # Browser = 1, User = 2
+
 --listing gms 
 create or replace temporary table listing_gms as (
 select
