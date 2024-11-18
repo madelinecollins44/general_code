@@ -22,11 +22,11 @@ group by all
 
 ----pull out events surrounding landing event to find real primary page
 with visits as (
-select
-  distinct visit_id
+select visit_id
 from etsy-data-warehouse-prod.weblog.visits
 where _date >= current_date-5
 and landing_event in ('shop_sold')
+order by visit_length desc
 limit 1
 )
 select
