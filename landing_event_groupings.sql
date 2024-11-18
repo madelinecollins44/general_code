@@ -5,7 +5,7 @@
       when landing_event in ("view_profile",'you') then "view_profile"
       when landing_event in ("search", "browselistings", "search_results", "async_listings_search", "autosuggest") then "search"
       when landing_event in ("your_purchases", "yr_purchases",'order__orders__tapped','view_receipt','view_receipt_downloads_page') then "your_purchases / orders"
-      when landing_event in ("view_listing", "image_zoom",'listing_page_recommendations','view_sold_listing','view_unavailable_listing','listing__listing_hub__tapped','appreciation_photo_detail') then "listing"
+      when landing_event in ("view_listing", "image_zoom",'listing_page_recommendations','view_sold_listing','view_unavailable_listing','listing__listing_hub__tapped','appreciation_photo_detail') then "view_listing"
       when landing_event in ("mc_seller_dashboard_legacy",'mission_control_orders_legacy','stats','listing-manager','mc_seller_dashboard','seller_handbook_view') then "seller"
       when landing_event in ("cart_view") then "cart"
       when landing_event in ("convo_view",'message__messages__tapped','messages','convo_main','member_conversations_detail','member_conversations_landing','branch_convo_landing','mc_conversations_detail') then "convo"
