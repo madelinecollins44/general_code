@@ -18,3 +18,20 @@ from
   etsy-data-warehouse-prod.weblog.visits
 where _date >= current_date-5
 group by all 
+
+
+----pull out events surrounding landing event to find real primary page
+with visits as (
+select
+  distinct visit_id
+from etsy-data-warehouse-prod.weblog.visits
+where _date >= current_date-5
+and landing_event in ('shop_sold')
+limit 1
+)
+select
+event_type,
+sequence_number
+from etsy-data-warehouse-prod.weblog.events
+inner join visits using (visit_id)
+order by 2 asc
