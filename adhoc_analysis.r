@@ -15,6 +15,7 @@ bq_auth()
 # pull in relevant data
 gcloud auth application-default login
 sql <- "select * from `etsy-data-warehouse-dev.madelinecollins.all_units_events_browser_level_acbv`"
+### code how to create these tables: https://github.com/madelinecollins44/gift_mode/blob/main/Merch_MDAY24_HubvsGM_test.sql
 
 #  Runs query and saves it to a temp table
 tb <- bq_project_query(billing, sql)
